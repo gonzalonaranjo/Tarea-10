@@ -1,5 +1,7 @@
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import junio2013.Anuncio;
 import junio2013.IBaseDeDatosDeAnunciantes;
 import junio2013.IBaseDeDatosDePagos;
@@ -75,5 +77,34 @@ public class test {
 		assertEquals(3, tab.anunciosPublicados());
 
 	}
+	@Test
+	public void publicarAnunciosEmpresaBorrar1YComprobarQueNoEsta(){
+		Anuncio anuncio1 = new Anuncio("anuncio 2", "segundo anuncio", "LA EMPRESA");
+		Anuncio anuncio2 = new Anuncio("anuncio 3", "tercer anuncio", "LA EMPRESA");
+		
+		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
+		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
+		
+		tab.publicarAnuncio(anuncio1, bdAnunciantes, bdPagos);
+		tab.publicarAnuncio(anuncio2, bdAnunciantes, bdPagos);
+		
+		tab.borrarAnuncio(anuncio1.titulo_, "LA EMPRESA");
+		assertEquals(null, tab.buscarAnuncioPorTitulo(anuncio1.titulo_));
+		assertEquals(2, tab.anunciosPublicados());
+	}
 	
+	@Test
+	public void publicarAnuncioQueYaExisteNoSeInserta(){
+		Anuncio anuncio1 = new Anuncio("anuncio 2", "segundo anuncio", "LA EMPRESA");
+		Anuncio anuncio2 = new Anuncio("anuncio 2", "tercer anuncio", "LA EMPRESA");
+		
+		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
+		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
+		
+		tab.publicarAnuncio(anuncio1, bdAnunciantes, bdPagos);
+		assertEquals(2, tab.anunciosPublicados());
+		tab.publicarAnuncio(anuncio2, bdAnunciantes, bdPagos);
+		assertEquals(2, tab.anunciosPublicados());
+		
+	}
 }

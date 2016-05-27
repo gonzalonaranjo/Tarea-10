@@ -41,15 +41,17 @@ public class TablonDeAnuncios {
   public void publicarAnuncio(Anuncio anuncio, 
       IBaseDeDatosDeAnunciantes bdAnunciantes, 
       IBaseDeDatosDePagos bdPagos) {
-    if (anuncio.anunciante_.equals("LA EMPRESA"))
-      listaDeAnuncios_.add(anuncio);
-    else {
-      if ((bdAnunciantes.buscarAnunciante(anuncio.anunciante_)) &&
-              (bdPagos.anuncianteTieneSaldo(anuncio.anunciante_))) {
-        listaDeAnuncios_.add(anuncio);
-        bdPagos.anuncioPublicado(anuncio.anunciante_);
-      }
-    }
+	  if(null == buscarAnuncioPorTitulo(anuncio.titulo_)){
+		  if (anuncio.anunciante_.equals("LA EMPRESA"))listaDeAnuncios_.add(anuncio);
+		  else {
+		      if ((bdAnunciantes.buscarAnunciante(anuncio.anunciante_)) &&
+		              (bdPagos.anuncianteTieneSaldo(anuncio.anunciante_))) {
+		        listaDeAnuncios_.add(anuncio);
+		        bdPagos.anuncioPublicado(anuncio.anunciante_);
+		      }
+		    }
+	  }
+    
   }
 
   /**
