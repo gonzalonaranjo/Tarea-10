@@ -56,9 +56,24 @@ public class test {
 		when(bdPagos.anuncianteTieneSaldo("OTRA EMPRESA")).thenReturn(true);
 		
 		tab.publicarAnuncio(anuncio, bdAnunciantes, bdPagos);
-		//assertEquals(2, tab.anunciosPublicados());
+		assertEquals(2, tab.anunciosPublicados());
 		
 		verify(bdAnunciantes).buscarAnunciante("OTRA EMPRESA");
+	}
+	@Test
+	public void publicarAnuncioDeEmpresaYComrobarQueEsta(){
+		Anuncio anuncio1 = new Anuncio("anuncio 2", "segundo anuncio", "LA EMPRESA");
+		Anuncio anuncio2 = new Anuncio("anuncio 3", "tercer anuncio", "LA EMPRESA");
+		
+		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
+		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
+		
+		tab.publicarAnuncio(anuncio1, bdAnunciantes, bdPagos);
+		tab.publicarAnuncio(anuncio2, bdAnunciantes, bdPagos);
+		
+		assertEquals(anuncio2, tab.buscarAnuncioPorTitulo(anuncio2.titulo_));
+		assertEquals(3, tab.anunciosPublicados());
+
 	}
 	
 }
