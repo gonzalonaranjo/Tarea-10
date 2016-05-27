@@ -1,7 +1,8 @@
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import junio2013.AnuncianteNoExisteException;
 import junio2013.Anuncio;
 import junio2013.IBaseDeDatosDeAnunciantes;
 import junio2013.IBaseDeDatosDePagos;
@@ -43,6 +44,8 @@ public class test {
 		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
 		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
 		
+		when(bdAnunciantes.buscarAnunciante("OTRA EMPRESA")).thenReturn(true);
+		when(bdPagos.anuncianteTieneSaldo("OTRA EMPRESA")).thenReturn(false);
 		tab.publicarAnuncio(anuncio, bdAnunciantes, bdPagos);
 		
 		assertEquals(1, tab.anunciosPublicados());
@@ -54,13 +57,13 @@ public class test {
 		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
 		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
 		
-		when(bdAnunciantes.buscarAnunciante("OTRA EMPRESA")).thenReturn(true);
-		when(bdPagos.anuncianteTieneSaldo("OTRA EMPRESA")).thenReturn(true);
+		when(bdAnunciantes.buscarAnunciante(anuncio.anunciante_)).thenReturn(true);
+		when(bdPagos.anuncianteTieneSaldo(anuncio.anunciante_)).thenReturn(true);
 		
 		tab.publicarAnuncio(anuncio, bdAnunciantes, bdPagos);
 		assertEquals(2, tab.anunciosPublicados());
 		
-		verify(bdAnunciantes).buscarAnunciante("OTRA EMPRESA");
+		
 	}
 	@Test
 	public void publicarAnuncioDeEmpresaYComrobarQueEsta(){
@@ -106,5 +109,16 @@ public class test {
 		tab.publicarAnuncio(anuncio2, bdAnunciantes, bdPagos);
 		assertEquals(2, tab.anunciosPublicados());
 		
+	}
+	@Test(expected = AnuncianteNoExisteException.class)
+	public void publicarAnuncioAnuncianteNoExisteDevuelveExcepcion(){
+		Anuncio anuncio1 = new Anuncio("anuncio 2", "segundo anuncio", "OTRA EMPRESA");
+		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
+		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
+		
+		when(bdAnunciantes.buscarAnunciante(anuncio1.anunciante_)).thenReturn(false);
+		when(bdPagos.anuncianteTieneSaldo(anuncio1.anunciante_)).thenReturn(false);
+		
+		tab.publicarAnuncio(anuncio1, bdAnunciantes, bdPagos);
 	}
 }

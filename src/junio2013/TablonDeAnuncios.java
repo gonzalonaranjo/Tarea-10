@@ -49,9 +49,12 @@ public class TablonDeAnuncios {
 		        listaDeAnuncios_.add(anuncio);
 		        bdPagos.anuncioPublicado(anuncio.anunciante_);
 		      }
+		      if(!bdAnunciantes.buscarAnunciante(anuncio.anunciante_)){
+		    	  String mensaje = String.join(", ", anuncio.toString());
+				  throw new AnuncianteNoExisteException(mensaje);
+		      }
 		    }
-	  }
-    
+	  }	     
   }
 
   /**
@@ -68,7 +71,8 @@ public class TablonDeAnuncios {
     }
     return resultado;
   }
-
+  
+  
   /**
    * Borra un anuncio que se ajuste al titulo y anunciante que se pasan como argumentos
    * @param titulo titulo del anuncio
