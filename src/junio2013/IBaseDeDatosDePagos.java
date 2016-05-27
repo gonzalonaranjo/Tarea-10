@@ -9,7 +9,6 @@ package junio2013;
  */
 public interface IBaseDeDatosDePagos {
   //public void pagarAnuncios(String anunciante, int numeroDeAnuncios);
-
   public void anuncioPublicado(String anunciante);
 
   public boolean anuncianteTieneSaldo(String anunciante);
