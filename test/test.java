@@ -19,7 +19,7 @@ public class test {
 	}
 	
 	@Test
-	public void crearUnAnuncioHayUnAnuncio(){
+	public void crearTablonHayUnAnuncio(){
 		assertEquals(1, tab.anunciosPublicados());
 	}
 	
@@ -35,4 +35,16 @@ public class test {
 		assertEquals(2, tab.anunciosPublicados());
 		
 	}
+	@Test
+	public void publicarUnAnuncioQueNoSeaEmpresaYQueNoInserte(){
+		Anuncio anuncio = new Anuncio("anuncio nuevo", "primer anuncio", "OTRA EMPRESA");
+		IBaseDeDatosDeAnunciantes bdAnunciantes = mock(IBaseDeDatosDeAnunciantes.class);
+		IBaseDeDatosDePagos bdPagos = mock(IBaseDeDatosDePagos.class);
+		
+		tab.publicarAnuncio(anuncio, bdAnunciantes, bdPagos);
+		
+		assertEquals(1, tab.anunciosPublicados());
+		
+	}
+	
 }
